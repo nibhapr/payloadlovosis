@@ -12,6 +12,8 @@ import { Homepage } from './collections/homepage'
 import { ServicePage } from './collections/services'
 import { Products } from './collections/Products'
 import { Categories } from './collections/Categories'
+import { redirectsPlugin } from '@payloadcms/plugin-redirects'
+import { revalidateRedirects } from './hooks/revalidateRedirects'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -42,6 +44,28 @@ export default buildConfig({
       uploadsCollection: 'media',
       generateTitle: ({ doc }) => `Lovosis Technology L.L.C — ${doc.title}`,
       tabbedUI: true,
+    }),
+    redirectsPlugin({
+      collections: ['products'],
+      overrides: {
+        // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
+        fields: ({ defaultFields }) => {
+          return defaultFields.map((field) => {
+            if ('name' in field && field.name === 'from') {
+              return {
+                ...field,
+                admin: {
+                  description: 'You will need to rebuild the website when changing this field.',
+                },
+              }
+            }
+            return field
+          })
+        },
+        hooks: {
+          afterChange: [revalidateRedirects],
+        },
+      },
     }),
   ],
 })

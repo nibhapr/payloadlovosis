@@ -4,6 +4,11 @@ import { PageRange } from '@/components/PageRange'
 import { CollectionArchive } from '@/components/CollectionArchive'
 import { Pagination } from '@/components/Pagination'
 
+type Media = {
+  url: string
+  alt?: string
+}
+
 export default async function prodcuts() {
   const payload = await getPayload({ config: configPromise })
 
@@ -37,6 +42,17 @@ export default async function prodcuts() {
           totalDocs={products.totalDocs}
         />
       </div>
+      {/* {products.docs.map((p) => (
+        <div key={p.slug}>
+          <p>{p.title}</p>
+          {p.heroImage && (
+            <img
+              src={(p.heroImage as Media).url}
+              alt={(p.heroImage as Media).alt || 'Product Image'}
+            />
+          )}
+        </div>
+      ))} */}
 
       <CollectionArchive products={products.docs} />
 

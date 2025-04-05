@@ -144,7 +144,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ logo }) => {
           >
             <div className="relative h-12 sm:h-16 w-[220px] sm:w-[300px] group">
               <Logo
-                image={logo.url ?? ''}
+                image={logo?.url || ''}
                 className="h-10 sm:h-14 w-auto object-contain transition-all duration-300 group-hover:brightness-110"
               />
             </div>
