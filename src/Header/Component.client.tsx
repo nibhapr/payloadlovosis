@@ -387,7 +387,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ logo }) => {
 
         {/* Mobile Navigation - Enhanced version */}
         {isOpen && (
-          <div className="md:hidden mt-4 bg-white rounded-lg shadow-lg overflow-hidden border-t border-gray-100">
+          <div className="lg:hidden mt-4 bg-white rounded-lg shadow-lg overflow-hidden border-t border-gray-100">
             <div className="animate-slideDown">
               {/* Home Link */}
               <Link

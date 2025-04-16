@@ -1,17 +1,12 @@
-import type { CollectionConfig } from 'payload'
+import type { GlobalConfig } from 'payload'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import { upload } from 'node_modules/payload/dist/fields/validations'
 
-export const Homepage: CollectionConfig = {
+export const Homepage: GlobalConfig = {
   slug: 'homepage',
   access: {
-    create: authenticated,
-    delete: authenticated,
-    read: anyone,
-    update: authenticated,
-  },
-  admin: {
-    useAsTitle: 'title',
+    read: () => true, // Allow public access (adjust as needed)
   },
   fields: [
     {
@@ -19,10 +14,22 @@ export const Homepage: CollectionConfig = {
       type: 'text',
       required: true,
     },
+
     {
-      name: 'heroImage',
-      type: 'upload',
-      relationTo: 'media',
+      name: 'sliderImage',
+      type: 'array',
+      label: 'Slider Image',
+      fields: [
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+          admin: {
+            description: 'upload slider image',
+          },
+        },
+      ],
     },
   ],
 }

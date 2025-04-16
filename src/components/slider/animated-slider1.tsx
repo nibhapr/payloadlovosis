@@ -46,7 +46,7 @@ export default function AnimatedHeroSlider({ homepage }: { homepage: Homepage })
   }
 
   return (
-    <section className="relative w-full h-full overflow-hidden">
+    <section className=" w-full h-full overflow-hidden z-50">
       <AnimatePresence initial={false}>
         <motion.div
           key={currentIndex}
@@ -56,14 +56,14 @@ export default function AnimatedHeroSlider({ homepage }: { homepage: Homepage })
           transition={{ duration: 0.5 }}
           className="absolute inset-0"
         >
-          <Image
+          <img
             src={slides[currentIndex]!.image.url}
             alt={`slide${slides[currentIndex]!.id}`}
             fill
             className="object-cover"
             priority
           />
-          <div className=" inset-0 bg-black bg-opacity-40" />
+          <div className="absolute inset-0 bg-black bg-opacity-40" />
           <motion.div className="absolute inset-0 flex flex-col items-center justify-center gap-y-64 md:gap-y-0 text-center text-background dark:text-primary p-4">
             <motion.h1
               initial={{ y: 20, opacity: 0 }}
@@ -84,6 +84,53 @@ export default function AnimatedHeroSlider({ homepage }: { homepage: Homepage })
           </motion.div>
         </motion.div>
       </AnimatePresence>
+
+      <button
+        onClick={handlePrevious}
+        className="absolute left-4 top-1/2 -translate-y-1/2 bg-background dark:bg-secondary  bg-opacity-50 p-2 rounded-full hover:bg-opacity-75 transition-all"
+        aria-label="Previous slide"
+      >
+        <ChevronLeft className="h-6 w-6 text-black dark:text-muted-foreground" />
+      </button>
+      <button
+        onClick={handleNext}
+        className="absolute right-4 top-1/2 -translate-y-1/2 bg-background dark:bg-secondary bg-opacity-50 p-2 rounded-full hover:bg-opacity-75 transition-all"
+        aria-label="Next slide"
+      >
+        <ChevronRight className="h-6 w-6 text-black dark:text-muted-foreground" />
+      </button>
+
+      <div className="absolute bottom-4 left-0 right-0">
+        <div className="flex justify-center space-x-2">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                setCurrentIndex(index)
+                setIsAutoPlaying(false)
+                setTimeout(() => {
+                  setIsAutoPlaying(true)
+                }, 400)
+              }}
+              className={`w-3 h-3 rounded-full ${
+                index === currentIndex
+                  ? 'bg-background dark:bg-foreground/50'
+                  : 'bg-secondary dark:bg-secondary opacity-50'
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+
+      {isAutoPlaying && (
+        <motion.div
+          className="absolute bottom-0 left-0 h-1 bg-background dark:bg-primary"
+          initial={{ width: '0%' }}
+          animate={{ width: '100%' }}
+          transition={{ duration: 5, ease: 'linear', repeat: Infinity }}
+        />
+      )}
     </section>
   )
 }

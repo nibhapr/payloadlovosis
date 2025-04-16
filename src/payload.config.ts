@@ -8,12 +8,12 @@ import { fileURLToPath } from 'url'
 import { SiteSettings } from './globals/Settings/config'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
-import { Homepage } from './collections/homepage'
 import { ServicePage } from './collections/services'
 import { Products } from './collections/Products'
 import { Categories } from './collections/Categories'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { revalidateRedirects } from './hooks/revalidateRedirects'
+import { Homepage } from './collections/homepage'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -25,9 +25,9 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Homepage, ServicePage, Products, Categories],
+  collections: [Users, Media, ServicePage, Products, Categories],
   editor: lexicalEditor(),
-  globals: [SiteSettings],
+  globals: [SiteSettings, Homepage],
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
@@ -40,7 +40,7 @@ export default buildConfig({
 
   plugins: [
     seoPlugin({
-      collections: ['homepage'],
+      collections: ['ServicePage'],
       uploadsCollection: 'media',
       generateTitle: ({ doc }) => `Lovosis Technology L.L.C — ${doc.title}`,
       tabbedUI: true,
